@@ -3,7 +3,7 @@ import yt_dlp
 import os
 import uuid
 
-app = Flask(__name__, template_folder='templates')  # ชี้ไปยังโฟลเดอร์ templates
+app = Flask(__name__, template_folder='templates')  
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -25,7 +25,7 @@ def index():
             return send_file(filename, as_attachment=True)
 
         except Exception as e:
-            return render_template("index.html", message=f"❌ ผิดพลาด: {e}")
+            return render_template("index.html", message=f" error: {e}")
 
         finally:
             if os.path.exists(filename):
