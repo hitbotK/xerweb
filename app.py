@@ -3,18 +3,13 @@ import yt_dlp
 import os
 import uuid
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates')  # ชี้ไปยังโฟลเดอร์ templates
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         url = request.form.get('url')
-        if not url:
-            return render_template("index.html", message="❌ link video")
-
-        download_dir = "downloads"
-        os.makedirs(download_dir, exist_ok=True)
-        filename = os.path.join(download_dir, f"{uuid.uuid4()}.mp4")
+        filename = f"{uuid.uuid4()}.mp4"
 
         ydl_opts = {
             'outtmpl': filename,
@@ -26,10 +21,11 @@ def index():
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
-            return send_file(filename, as_attachment=True, download_name="video.mp4")
+
+            return send_file(filename, as_attachment=True)
 
         except Exception as e:
-            return render_template("index.html", message=f": {e}")
+            return render_template("index.html", message=f"❌ ผิดพลาด: {e}")
 
         finally:
             if os.path.exists(filename):
