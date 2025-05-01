@@ -3,7 +3,7 @@ import yt_dlp
 import os
 import uuid
 
-app = Flask(__name__, template_folder='templates') 
+app = Flask(__name__, template_folder='templates')  # ชี้ไปยังโฟลเดอร์ templates
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -37,4 +37,4 @@ def index():
     return render_template("index.html", message=None)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    app.run(debug=True)
