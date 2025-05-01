@@ -3,7 +3,7 @@ import yt_dlp
 import os
 import uuid
 
-app = Flask(__name__, template_folder='templates') 
+app = Flask(__name__, template_folder='templates')  # ชี้ไปยังโฟลเดอร์ templates
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
