@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>xer x </title>
+    <link rel="icon" href="icon1.jpg" type="image/png"> <!-- เปลี่ยน path-to-your-icon.png เป็นที่อยู่ของไอคอนที่คุณต้องการใช้ -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap'); /* ฟอนต์แนว Dark Souls */
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000; /* สีพื้นหลังดำ */
+            background-image: url(''); /* ไว้ใส่รูปพื้นหลังทีหลัง */
+            background-size: cover;
+            background-position: center;
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: background-color 0.3s, color 0.3s; /* เพิ่มการเปลี่ยนแปลงสีอย่างนุ่มนวล */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 3em;
+            text-shadow: 2px 2px 8px #ffcc00;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+            
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 30px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #ff6666;
+        }
+
+        /* ปุ่มเปลี่ยนพื้นหลัง */
+        #changeBackgroundButton {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* ปุ่มสำหรับเปลี่ยนธีม */
+        #themeToggleButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ไอคอนพระจันทร์และดวงอาทิตย์ */
+        .icon {
+            font-size: 20px;
+        }
+
+        /* ซ่อน input file */
+        #backgroundInput {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Dowload Video</h1>
+    <form method="POST">
+        <input type="text" name="url" placeholder="วางลิงก์วิดีโอที่นี่">
+        <button type="submit">Dowload</button>
+    </form>
+
+    <!-- ปุ่มสำหรับเปลี่ยนรูปพื้นหลัง -->
+    <button id="changeBackgroundButton">เปลี่ยนรูปพื้นหลัง</button>
+    <input type="file" id="backgroundInput" accept="image/*" onchange="changeBackground(event)">
+
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+
+    <!-- ปุ่มสำหรับเปลี่ยนธีม -->
+    <button id="themeToggleButton" onclick="toggleTheme()">
+        <span id="themeIcon" class="icon">🌙</span> <!-- ใช้ไอคอนพระจันทร์ -->
+    </button>
+
+    <script>
+        // ฟังก์ชันที่ใช้เปลี่ยนรูปพื้นหลัง
+        function changeBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.body.style.backgroundImage = `url(${e.target.result})`;
+                    localStorage.setItem('backgroundImage', e.target.result); // เซฟรูปใน localStorage
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ฟังก์ชันแสดง input เลือกรูปเมื่อกดปุ่ม "เปลี่ยนรูปพื้นหลัง"
+        document.getElementById('changeBackgroundButton').onclick = function() {
+            document.getElementById('backgroundInput').click();
+        }
+
+        // ฟังก์ชันเปลี่ยนธีม
+        let isDarkTheme = true; // เริ่มต้นที่ธีมสีมืด
+        function toggleTheme() {
+            if (isDarkTheme) {
+                document.body.style.backgroundColor = "#f0f0f0";  // เปลี่ยนเป็นสีพื้นหลังอ่อน
+                document.body.style.color = "#000";  // เปลี่ยนข้อความเป็นสีดำ
+                document.getElementById("themeIcon").textContent = "🌞";  // เปลี่ยนไอคอนเป็นดวงอาทิตย์
+                localStorage.setItem('theme', 'light'); // เซฟธีมใน localStorage
+            } else {
+                document.body.style.backgroundColor = "#000";  // เปลี่ยนเป็นสีพื้นหลังดำ
+                document.body.style.color = "#fff";  // เปลี่ยนข้อความเป็นสีขาว
+                document.getElementById("themeIcon").textContent = "🌙";  // เปลี่ยนไอคอนเป็นพระจันทร์
+                localStorage.setItem('theme', 'dark'); // เซฟธีมใน localStorage
+            }
+            isDarkTheme = !isDarkTheme; // สลับธีม
+        }
+
+        // ฟังก์ชันเพื่อโหลดข้อมูลจาก localStorage
+        window.onload = function() {
+            // โหลดธีมที่เก็บไว้
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                if (savedTheme === 'light') {
+                    document.body.style.backgroundColor = "#f0f0f0";
+                    document.body.style.color = "#000";
+                    document.getElementById("themeIcon").textContent = "🌞";
+                    isDarkTheme = false;
+                } else {
+                    document.body.style.backgroundColor = "#000";
+                    document.body.style.color = "#fff";
+                    document.getElementById("themeIcon").textContent = "🌙";
+                    isDarkTheme = true;
+                }
+            }
+
+            // โหลดรูปพื้นหลังจาก localStorage
+            const savedBackground = localStorage.getItem('backgroundImage');
+            if (savedBackground) {
+                document.body.style.backgroundImage = `url(${savedBackground})`;
+            }
+        }
+    </script>
+</body>
+</html>
