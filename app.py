@@ -29,7 +29,7 @@ def index():
             return send_file(filename, as_attachment=True, download_name="video.mp4")
 
         except Exception as e:
-            return render_template("index.html", message=f"❌ ผิดพลาด: {e}")
+            return render_template("index.html", message=f": {e}")
 
         finally:
             if os.path.exists(filename):
